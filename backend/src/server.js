@@ -20,7 +20,7 @@ app.get("/hello", (req, res) => {
   res.send("Hello, World!");
 });
 
-app.get("/api/inngest", serve({client:inngest, functions}))
+app.use("/api/inngest", serve({client:inngest, functions}))
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
