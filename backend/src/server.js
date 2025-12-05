@@ -5,6 +5,8 @@ import { connectDb } from "./lib/db.js";
 import cors from 'cors'
 import {serve } from 'inngest/express'
 import {inngest,functions} from './lib/inngest.js'
+import { clerkMiddleware } from '@clerk/express'
+import chatRoutes from './routes/chatRoutes.js'
 
 
 dotenv.config({quiet: true});
@@ -15,12 +17,15 @@ const __dirname = path.resolve();
 
 app.use(express.json())
 app.use(cors({origin:process.env.CLIENT_URL, credentials:true}))
+app.use(clerkMiddleware())
 
 app.get("/hello", (req, res) => {
   res.send("Hello, World!");
 });
 
+
 app.use("/api/inngest", serve({client:inngest, functions}))
+app.use("/api/chat",chatRoutes)
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
