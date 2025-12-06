@@ -7,6 +7,7 @@ import {serve } from 'inngest/express'
 import {inngest,functions} from './lib/inngest.js'
 import { clerkMiddleware } from '@clerk/express'
 import chatRoutes from './routes/chatRoutes.js'
+import sessionRoutes from './routes/sessionRoute.js'
 
 
 dotenv.config({quiet: true});
@@ -26,6 +27,7 @@ app.get("/hello", (req, res) => {
 
 app.use("/api/inngest", serve({client:inngest, functions}))
 app.use("/api/chat",chatRoutes)
+app.use("/api/sessions",sessionRoutes)
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
