@@ -1,2 +1,7 @@
 @import 'tailwindcss';
 @plugin "daisyui";
+
+::selection{
+    background-color: #eb2556;
+    color: #ffffff;
+}
