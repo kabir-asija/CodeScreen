@@ -1,6 +1,7 @@
 @import 'tailwindcss';
-@plugin "daisyui";
-
+ @plugin "daisyui" {
+  themes: forest;
+ }
 ::selection{
     background-color: #4e4e4e;
     color: #ffffff;
