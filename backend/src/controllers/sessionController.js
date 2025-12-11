@@ -1,5 +1,6 @@
 import Session from "../models/Session.js";
 import { chatClient, streamClient } from "../lib/stream.js";
+import mongoose from "mongoose";
 
 export async function createSession(req, res) {
   try {
@@ -81,16 +82,21 @@ export async function getRecentSessions(req, res) {
 
 export async function getSessionById(req, res) {
   try {
-    const { id } = req.aparams;
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid session ID" });
+    }
+
     const session = await Session.findById(id)
       .populate("host", "name email profileImage clerkId")
       .populate("participant", "name email profileImage clerkId");
 
     if (!session) return res.status(404).json({ message: "Session not found" });
 
-    res.status(200).json({ session });
+    res.status(200).json(session);
   } catch (error) {
-    console.error("Error in getSessionById: ", error);
+    console.error("Error in getSessionById:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 }
